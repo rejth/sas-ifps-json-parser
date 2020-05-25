@@ -16,9 +16,8 @@
 # Импорт библиотек
 import requests
 import json
-# Функция парсинга строки JSON
+
 def execute(JSONGridString, alertingEventId, actionableEntityType, score, actionableEntityId, alertOriginCd, alertTypeCd, recQueueId):
-    # Выходная переменная - синтаксис SID
     "Output: response"
     # Получаем конечный список сценариев для загрузки в SVI вида [{ scenario1 }, { scenario2 }, { scenario3 }...]
     scenarioFiredEventsList = []
