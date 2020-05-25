@@ -1,12 +1,17 @@
 import json
 import requests
+
+host = 'http://banff.ruspfraudvi.rus.sas.com' # to edit if needed
+user = 'user1' # to edit if needed
+password = 'Go4thsas' # to edit if needed
+
 def execute(scenarioFiredEventsStr, enrichmentFiredEventsStr, alertingEventId, actionableEntityType, scoreMain, actionableEntityId, alertOriginCd, alertTypeCd, recQueueId):
-    # "Output: response"
-    oauthUrl = 'http://banff.ruspfraudvi.rus.sas.com/SASLogon/oauth/token'
+    "Output: response"
+    oauthUrl = host + '/SASLogon/oauth/token'
     oauthPayload = {
                 'grant_type': 'password',
-                'username': 'user1',
-                'password': 'Go4thsas'
+                'username': user,
+                'password': password
     }
     oauthHeaders = {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -15,7 +20,7 @@ def execute(scenarioFiredEventsStr, enrichmentFiredEventsStr, alertingEventId, a
     }
     accessToken = requests.post(oauthUrl, headers=oauthHeaders, params=oauthPayload).json().get('access_token')
     token = 'Bearer ' + accessToken
-    url = 'http://banff.ruspfraudvi.rus.sas.com/svi-alert/alertingEvents'
+    url = host + '/svi-alert/alertingEvents'
     body = {
                 "alertingEvents": [
                     {
@@ -29,7 +34,7 @@ def execute(scenarioFiredEventsStr, enrichmentFiredEventsStr, alertingEventId, a
                     }
                 ],
                 "scenarioFiredEvents": json.loads(scenarioFiredEventsStr),
-                "enrichment": json.loads(enrichmentFiredEventsStr)
+                "enrichment": [json.loads(enrichmentFiredEventsStr)]
             }
     headers = {
                 'Content-Type': 'application/vnd.sas.fcs.tdc.alertingeventsdataflat+json',
@@ -37,4 +42,5 @@ def execute(scenarioFiredEventsStr, enrichmentFiredEventsStr, alertingEventId, a
                 'Authorization' : token
     }
     response = requests.post(url, headers=headers, json=body).status_code
-    return response
+    bodyRequest = 'Alert payload status: ' + str(response) + '\n' + 'Request body' + ':' + '\n' + str(body)
+    return bodyRequest
