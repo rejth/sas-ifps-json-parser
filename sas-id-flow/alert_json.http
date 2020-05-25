@@ -1,0 +1,78 @@
+@host = http://banff.ruspfraudvi.rus.sas.com
+
+// @name login
+POST {{host}}/SASLogon/oauth/token
+    ?grant_type=password&username=user1&password=Go4thsas
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
+Authorization: Basic c2FzLmVjOg==
+
+###
+POST {{host}}/svi-alert/alertingEvents
+Content-Type: application/vnd.sas.fcs.tdc.alertingeventsdataflat+json
+Accept: application/vnd.sas.collection+json
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+{
+    "alertingEvents": [
+        {
+            "alertingEventId": "ALT_17000225",
+            "actionableEntityType": "vi_transaction",
+            "score": 280,
+            "actionableEntityId": "T000177842",
+            "alertOriginCd": "SA",
+            "alertTypeCd": "DEFAULT",
+            "recQueueId": "queue_21010226"
+        }
+    ],
+    "scenarioFiredEvents": [
+        {
+            "alertingEventId": "194834970003810275",
+            "scenarioFiredEventId": "474092461089218005",
+            "scenarioId": "SAS_21010226",
+            "scenarioName": "Account-recipient linked with an employee via contacts",
+            "scenarioDescription": "Account-recipient linked with an employee via contacts",
+            "scenarioOriginCd": "ID",
+            "scenarioFiredEntityType": "vi_transaction",
+            "scenarioFiredEntityId": "T000177842",
+            "score": 50, "displayTypeCd": "TEXT",
+            "displayFlg": "true",
+            "recQueueId": "queue_21010226",
+            "messageTemplateTxt": "Account-recipient linked with an employee via contacts"
+        },
+        {
+            "alertingEventId": "194834970003810275",
+            "scenarioFiredEventId": "022527020301528011",
+            "scenarioId": "SAS_21010226",
+            "scenarioName": "Employee account",
+            "scenarioDescription": "Employee account",
+            "scenarioOriginCd": "ID",
+            "scenarioFiredEntityType": "vi_transaction",
+            "scenarioFiredEntityId": "T000177842",
+            "score": 40,
+            "displayTypeCd": "TEXT",
+            "displayFlg": "true",
+            "recQueueId": "queue_21010226",
+            "messageTemplateTxt": "Employee account"
+        },
+        {
+            "alertingEventId": "194834970003810275",
+            "scenarioFiredEventId": "674917014227778633",
+            "scenarioId": "SAS_21010226",
+            "scenarioName": "Accumulative account",
+            "scenarioDescription": "Accumulative account",
+            "scenarioOriginCd": "ID",
+            "scenarioFiredEntityType": "vi_transaction",
+            "scenarioFiredEntityId": "T000177842",
+            "score": 70, "displayTypeCd": "TEXT",
+            "displayFlg": "true",
+            "recQueueId": "queue_21010226",
+            "messageTemplateTxt": "Accumulative account"
+        }
+    ],
+    "enrichment": [
+        {
+            "ALERTINGEVENTID": "194834970003810275", "REGION": "Moscow"
+        }
+    ]
+}
