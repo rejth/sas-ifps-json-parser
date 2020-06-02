@@ -1,7 +1,7 @@
-package "${PACKAGE_NAME}" /inline;
+package "${PACKAGE_NAME}" /inline; /* start of DS2 package*/
 
-    method execute(
-        /* Variables from flow */
+    method execute( /*start of execute step*/
+        /* External variables from SAS Intelligent Decisioning flow */
         varchar(32767) businessRuleOutputSerial,
         varchar(4000) oauth_token,
         varchar(1) ENABLE_ALERT_INPUT,
@@ -15,9 +15,7 @@ package "${PACKAGE_NAME}" /inline;
         varchar(4) displayFlg,
         varchar(100) displayTypeCd,
         varchar(100) messageTemplateTxt,
-        double P_fraudTrue,
         varchar(100) recQueueId,
-        varchar(100) replicateFlg,
         varchar(100) scenarioDescription,
         varchar(100) scenarioFiredEventId,
         varchar(100) scenarioFiredEntityType,
@@ -27,16 +25,12 @@ package "${PACKAGE_NAME}" /inline;
         varchar(100) scenarioOriginCd,
         double score,
         double alertscore,
-        double modelscore,
         double overall_risk_score,
         double minimumScore,
         double maximumScore,
         varchar(100) triggeringFlg,
         varchar(100) workspaceFlg,
-        varchar(6) applicationtype,
-        varchar(4) applicationsubtype,
-        varchar(40) forename,
-        varchar(40) surname,
+        varchar(100) replicateFlg,
         in_out varchar ALERT_RESPONSE,
         varchar(536870911) alertPayload
         );
@@ -46,7 +40,7 @@ package "${PACKAGE_NAME}" /inline;
         dcl package datagrid businessRulesOutputGrid();
         dcl package json scenario();
 
-        /* Declare variables created as part of DS2 Code */
+        /* Declare internal variables created as part of DS2 Code */
         dcl varchar(1048576) character set utf8 response;
         dcl int status;
         dcl int rc rowCount i;
@@ -57,7 +51,7 @@ package "${PACKAGE_NAME}" /inline;
         dcl int _initCalled;
 
         /* SAS Visual Investigator Alert API Header Information */
-        h.createPostMethod('http://banff.ruspfraudvi.rus.sas.com/svi-alert/alertingEvents?');
+        h.createPostMethod('http://banff.ruspfraudvi.rus.sas.com/svi-alert/alertingEvents?'); /* to edit if needed */
         h.setRequestContentType('application/vnd.sas.fcs.tdc.alertingeventsdataflat+json;charset=UTF-8');
         h.addRequestHeader('Accept','application/vnd.sas.collection+json');
 
@@ -89,7 +83,7 @@ package "${PACKAGE_NAME}" /inline;
                 scenario.writeString('scenarioFiredEvents', 32);
                 scenario.writeArrayOpen();
                     do i = 1 to rowCount - 1; /* Shouldn't need -1 but for some reason an additional row is counted that is blank? */
-                        /* Get data from datagrid */
+                        /* Get scenario data from datagrid */
                         scenarioFiredEventId = datagrid_get(businessRulesOutputGrid, 'scenarioFiredEventId', i);
                         scenarioFiredEntityType = datagrid_get(businessRulesOutputGrid, 'scenarioFiredEntityType', i);
                         scenarioFiredEntityId = datagrid_get(businessRulesOutputGrid, 'scenarioFiredEntityId', i);
@@ -104,7 +98,7 @@ package "${PACKAGE_NAME}" /inline;
                         displayTypeCd = datagrid_get(businessRulesOutputGrid, 'displayTypeCd', i);
                         displayFlg = datagrid_get(businessRulesOutputGrid, 'displayFlg', i);
                         recQueueId = datagrid_get(businessRulesOutputGrid, 'recQueueId', i);
-                            /* Create scenario JSON body */
+                        /* Create scenario JSON body */
                         scenario.writeObjOpen();
                             scenario.writeString('alertingEventId', 32); scenario.writeString(alertingEventId, 32);
                             scenario.writeString('scenarioFiredEventId', 32); scenario.writeString(scenarioFiredEventId, 32); /* Need a consistent value to tie back to contributing objects? */
@@ -150,10 +144,6 @@ package "${PACKAGE_NAME}" /inline;
                     /* Create enrichments JSON body */
                     scenario.writeObjOpen();
                         scenario.writeString('alertingEventId', 32); scenario.writeString(alertingEventId, 32);
-                        scenario.writeString('forename', 32); scenario.writeString(forename, 32);
-                        scenario.writeString('surname', 32); scenario.writeString(surname, 32);
-                        scenario.writeString('applicationtype', 32); scenario.writeString(applicationtype, 32);
-                        scenario.writeString('applicationsubtype', 32); scenario.writeString(applicationsubtype, 32);
                     scenario.writeClose();
                 scenario.writeClose();
 
@@ -166,12 +156,15 @@ package "${PACKAGE_NAME}" /inline;
         if inMas() then h.setOAuthToken(oauth_Token); else h.addSASOAuthToken();
         h.setRequestBodyAsString(alertPayload);
         h.executeMethod();
+
         status = h.getStatusCode();
         put status;
+
         h.getResponseBodyAsString(response, rc);
         put response;
         put alertPayload;
+
         ALERT_RESPONSE = 'SUCCESS';
 
-    end; /*end of execute*/
-endpackage;
+    end; /*end of execute step*/
+endpackage; /*end of DS2 package*/
