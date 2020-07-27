@@ -1,0 +1,21 @@
+@host = intech.pdcesx16026.exnet.sas.com:80
+
+// @name login
+POST http://sas.ec:@{{host}}/SASLogon/oauth/token/
+    ?grant_type=password&username=videmo&password=Go4thsas
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+
+###
+
+// пример инкрементного переиндекса
+POST http://{{host}}/svi-datahub/admin/asyncJobs?new
+Accept: application/json, text/plain, */*
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer {{login.response.body.$.access_token}}
+
+{
+  "parameters": {
+    "type": "SEARCH_INDEX_LOADER"
+  }
+}
