@@ -17,8 +17,7 @@ def execute(JSONGridString):
                             "displayTypeCd", 
                             "displayFlg", 
                             "recQueueId", 
-                            "messageTemplateTxt"
-       ]
+                            "messageTemplateTxt"]
         for index in range(len(scenarioKeysList)):
             scenarioEventsDict[scenarioKeysList[index]] = scenarioList[scenario][index]
         scenarioFiredEventsList.append(scenarioEventsDict)
