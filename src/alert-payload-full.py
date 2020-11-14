@@ -49,8 +49,7 @@ def execute(JSONGridString, alertingEventId, actionableEntityType, score, action
         ]
         # Цикл по списку scenarioKeysList - перебираем ключи и в каждое из них записываем соответствующее значение из scenarioList
         for index in range(len(scenarioKeysList)):
-            scenarioEventsDict[scenarioKeysList[index]
-                               ] = scenarioList[scenario][index]
+            scenarioEventsDict[scenarioKeysList[index]] = scenarioList[scenario][index]
         # Добавляем каждый сценарий в конечный список сценариев scenarioFiredEventsList
         scenarioFiredEventsList.append(scenarioEventsDict)
     # Превращаем словарь в JSON-строку - это для отладки, опциональный шаг, чтобы проверить в SID
