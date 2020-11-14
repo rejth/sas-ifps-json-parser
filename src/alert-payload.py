@@ -4,7 +4,7 @@ import requests
 
 def execute(scenarioFiredEventsStr, enrichmentFiredEventsStr, alertingEventId, actionableEntityType, scoreMain, actionableEntityId, alertOriginCd, alertTypeCd, recQueueId):
     # "Output: response"
-    oauthUrl = 'http://banff.ruspfraudvi.rus.sas.com/SASLogon/oauth/token'
+    oauthUrl = 'http://server/SASLogon/oauth/token'
     oauthPayload = {
         'grant_type': 'password',
         'username': 'user',
