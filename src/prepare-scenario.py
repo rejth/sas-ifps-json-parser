@@ -5,7 +5,20 @@ def execute(JSONGridString):
     scenarioList = json.loads(JSONGridString)[1]['data']
     for scenario in range(len(scenarioList)):
         scenarioEventsDict = {}
-        scenarioKeysList = ["alertingEventId", "scenarioFiredEventId", "scenarioId", "scenarioName", "scenarioDescription", "scenarioOriginCd", "scenarioFiredEntityType","scenarioFiredEntityId", "score", "displayTypeCd", "displayFlg", "recQueueId", "messageTemplateTxt"]
+        scenarioKeysList = ["alertingEventId", 
+                            "scenarioFiredEventId", 
+                            "scenarioId", 
+                            "scenarioName", 
+                            "scenarioDescription", 
+                            "scenarioOriginCd", 
+                            "scenarioFiredEntityType",
+                            "scenarioFiredEntityId", 
+                            "score", 
+                            "displayTypeCd", 
+                            "displayFlg", 
+                            "recQueueId", 
+                            "messageTemplateTxt"
+       ]
         for index in range(len(scenarioKeysList)):
             scenarioEventsDict[scenarioKeysList[index]] = scenarioList[scenario][index]
         scenarioFiredEventsList.append(scenarioEventsDict)
