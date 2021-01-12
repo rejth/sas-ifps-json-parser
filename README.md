@@ -1,3 +1,3 @@
 # sas-ifps
 
-JSON-parser for preparing a valid JSON alert structure for loading into SAS Visual Investigator 10.6. 
+JSON-parser to validate JSON for loading alerts into SAS Visual Investigator app.
